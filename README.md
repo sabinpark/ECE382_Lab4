@@ -72,9 +72,9 @@ ECE382_Lab4
 
 ###### Table 4
 | Parameter | Value Sought |
-|:-:|:-:|
+|||
 | Starting address of ```func``` |  |
-| Ending address of ```func``` |  |
+| Ending address of `func` |  |
 | Register holding w |  |
 | Register holding x |  |
 | Register holding y |  |
