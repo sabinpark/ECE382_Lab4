@@ -12,18 +12,21 @@ ECE382_Lab4
 * each button press will move the block 8 pixels in the input direction
 * auxiliary button (SW3) will toggle the paint brush mode between drawing or clearing squares
 * must be written in C and call many of the subroutines from Lab 3 (drawBlock and changePosition)
+
 #### B Functionality
 * create a bouncing block
 * block moves across screen with no more than 8 pixels per jump
 * similar to assignment 6
 * add an adequate delay movement between each block movement
 * starting position and velocites should be initicialized in the header or randonly generated
+
 #### A Functionality
 * create Pong on the LCD
 * create a single paddle that moves up and down on one side of the LCD
 * control the paddle via up and down buttons
 * the block will bounce off the paddle like it bounces off the wall
 * game ends when the paddle misses the block
+
 #### Bonus Functionality (5 pts each)
 * must be written in assembly and called by C
 * *CIRCLE*: instead of a bouncing block, create a bouncing circular ball
