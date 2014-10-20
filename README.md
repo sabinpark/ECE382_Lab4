@@ -64,11 +64,11 @@ ECE382_Lab4
 ###### Table 3: Calling/Return Convention
 | Iteration | a | b | c | d | e |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| 1st | 10 | 9 | 8 | 7 | 8 |
-| 2nd | 16 | 15 | 14  | 13 | 14 |
-| 3rd | 22 | 21 | 20 | 19 | 20 |
-| 4th | 28 | 27 | 26 | 25 | 26 |
-| 5th | 34 | 33 | 32 | 31 | 32 |
+| 1st | 10 | 9 | 8 | 7 | 2 |
+| 2nd | 16 | 15 | 14  | 13 | 8 |
+| 3rd | 22 | 21 | 20 | 19 | 14 |
+| 4th | 28 | 27 | 26 | 25 | 20 |
+| 5th | 34 | 33 | 32 | 31 | 26 |
 
 ###### Table 4
 | Parameter | Value Sought |
@@ -83,9 +83,9 @@ ECE382_Lab4
 
 ### Cross Language Build Constructs
 * *What is the role of the `extern` directive in a .c file?*
-* * Answer
+  * The `extern` directive is used to call variables and allow these variables to be globally accessible. These variables are *declared* instead of being *defined*, and thus must be called somewhere other than from within the function. Furthermore, when these variables change, they retain their value.
 * *What is the role of the `.global` directive in an .asm file (used in lines 28-32)?*
-* * Answer
+  * Answer
 
 ## Lab
 
