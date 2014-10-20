@@ -40,14 +40,14 @@ ECE382_Lab4
 ###### Table 1
 | Size | Signed/Unsigned | Type | Min Value | Max Value |
 |:-: | :-: | :-: | :-: | :-: |
-| 8-bit | unsigned |  |  |  |
-| 8-bit | signed |  |  |  |
-| 16-bit | unsigned | unsigned short |  |  | 
-| 16-bit | signed |  |  |  |
-| 32-bit | unsigned |  |  |  |   
-| 32-bit | signed |  | -2, 147, 483, 648 |  |  
-| 64-bit | unsigned |  |  |  |
-| 64-bit | signed |  |  |  |
+| 8-bit | unsigned | unsigned char | 0 | 255 |
+| 8-bit | signed | signed char | -128 | 127 |
+| 16-bit | unsigned | unsigned short | 0 | 65,535 | 
+| 16-bit | signed | signed short | -32,768  | 32,767 |
+| 32-bit | unsigned | unsigned long  | 0 | 4,294,967,295 |   
+| 32-bit | signed | signed long | -2,147,483,648 | 2,147,483,647 |  
+| 64-bit | unsigned | unsigned long | 0 | 18,446,744,073,709,551,615 |
+| 64-bit | signed | signed long | -9,223,372,036,854,775,808 | 9,223,372,036,854,775,807 |
 
 ###### Table 2
 | Type | Meaning | C typedef Declaration |
