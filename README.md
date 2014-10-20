@@ -52,34 +52,34 @@ ECE382_Lab4
 ###### Table 2
 | Type | Meaning | C typedef Declaration |
 |:-:|:-:|:-:|
-| int8 | unsigned 8-bit value |  |
-| sint8 | signed 8-bit value |  |
+| int8 | unsigned 8-bit value | typedef unsigned char int8 |
+| sint8 | signed 8-bit value | typedef signed char sint8 |
 | int16 | unsigned 16-bit value | typedef unsigned short int16; |
-| sint16 | signed 16-bit value |  |
-| int32 | unsigned 32-bit value |  |
-| sint32 | signed 32-bit value |  |
-| int64 | unsigned 64-bit value |  |
-| sint64 | signed 64-bit value |  |
+| sint16 | signed 16-bit value | typedef signed short sint16 |
+| int32 | unsigned 32-bit value | typedef unsigned long int32  |
+| sint32 | signed 32-bit value | typedef signed long sint32 |
+| int64 | unsigned 64-bit value | typedef unsigned long int64 |
+| sint64 | signed 64-bit value | typedef signed long int64 |
 
 ###### Table 3: Calling/Return Convention
 | Iteration | a | b | c | d | e |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| 1st |  |  |  |  |  |
-| 2nd |  |  |  |  |  |
-| 3rd |  |  |  |  |  |
-| 4th |  |  |  |  |  |
-| 5th |  |  |  |  |  |
+| 1st | 10 | 9 | 8 | 7 | 10 |
+| 2nd | 16 | 15 | 14  | 14 | 16 |
+| 3rd | 22 | 21 | 20 | 19 | 22 |
+| 4th | 28 | 27 | 26 | 25 | 28 |
+| 5th | 34 | 33 | 32 | 31 | 34 |
 
 ###### Table 4
 | Parameter | Value Sought |
 |:-:|:-:|
-| Starting address of `func` |  |
-| Ending address of `func` |  |
-| Register holding w |  |
-| Register holding x |  |
-| Register holding y |  |
-| Register holding z |  |
-| Register holding return value |  |
+| Starting address of `func` | 0xC2CC  |
+| Ending address of `func` | 0xC2D8 |
+| Register holding w | r12  |
+| Register holding x | r13  |
+| Register holding y | r14  |
+| Register holding z | r15  |
+| Register holding return value | r12 |
 
 
 ## Lab
