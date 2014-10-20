@@ -37,6 +37,7 @@ ECE382_Lab4
 
 ## Prelab
 ### Data Types
+###### Table 1
 | Size | Signed/Unsigned | Type | Min Value | Max Value |
 |:-: | :-: | :-: | :-: | :-: |
 | 8-bit | unsigned |  |  |  |
@@ -48,6 +49,26 @@ ECE382_Lab4
 | 64-bit | unsigned |  |  |  |
 | 64-bit | signed |  |  |  |
 
+###### Table 2
+| Type | Meaning | C typedef Declaration |
+|:-:|:-:|:-:|
+| int8 | unsigned 8-bit value |  |
+| sint8 | signed 8-bit value |  |
+| int16 | unsigned 16-bit value | typedef unsigned short int16; |
+| sint16 | signed 16-bit value |  |
+| int32 | unsigned 32-bit value |  |
+| sint32 | signed 32-bit value |  |
+| int64 | unsigned 64-bit value |  |
+| sint64 | signed 64-bit value |  |
+
+###### Table 3: Calling/Return Convention
+| Iteration | a | b | c | d | e |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1st |  |  |  |  |  |
+| 2nd |  |  |  |  |  |
+| 3rd |  |  |  |  |  |
+| 4th |  |  |  |  |  |
+| 5th |  |  |  |  |  |
 
 ## Lab
 
