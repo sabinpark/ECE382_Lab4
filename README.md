@@ -46,29 +46,29 @@ ECE382_Lab4
 | 16-bit | signed | signed short | -32,768  | 32,767 |
 | 32-bit | unsigned | unsigned long  | 0 | 4,294,967,295 |   
 | 32-bit | signed | signed long | -2,147,483,648 | 2,147,483,647 |  
-| 64-bit | unsigned | unsigned long | 0 | 18,446,744,073,709,551,615 |
-| 64-bit | signed | signed long | -9,223,372,036,854,775,808 | 9,223,372,036,854,775,807 |
+| 64-bit | unsigned | unsigned long long | 0 | 18,446,744,073,709,551,615 |
+| 64-bit | signed | signed long long | -9,223,372,036,854,775,808 | 9,223,372,036,854,775,807 |
 
 ###### Table 2
 | Type | Meaning | C typedef Declaration |
 |:-:|:-:|:-:|
-| int8 | unsigned 8-bit value | typedef unsigned char int8 |
-| sint8 | signed 8-bit value | typedef signed char sint8 |
-| int16 | unsigned 16-bit value | typedef unsigned short int16; |
-| sint16 | signed 16-bit value | typedef signed short sint16 |
-| int32 | unsigned 32-bit value | typedef unsigned long int32  |
-| sint32 | signed 32-bit value | typedef signed long sint32 |
-| int64 | unsigned 64-bit value | typedef unsigned long int64 |
-| sint64 | signed 64-bit value | typedef signed long int64 |
+| int8 | unsigned 8-bit value | `typedef` unsigned char int8 |
+| sint8 | signed 8-bit value | `typedef` signed char sint8 |
+| int16 | unsigned 16-bit value | `typedef` unsigned short int16; |
+| sint16 | signed 16-bit value | `typedef` signed short sint16 |
+| int32 | unsigned 32-bit value | `typedef` unsigned long int32  |
+| sint32 | signed 32-bit value | `typedef` signed long sint32 |
+| int64 | unsigned 64-bit value | `typedef` unsigned long long int64 |
+| sint64 | signed 64-bit value | `typedef` signed long long int64 |
 
 ###### Table 3: Calling/Return Convention
 | Iteration | a | b | c | d | e |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| 1st | 10 | 9 | 8 | 7 | 10 |
-| 2nd | 16 | 15 | 14  | 14 | 16 |
-| 3rd | 22 | 21 | 20 | 19 | 22 |
-| 4th | 28 | 27 | 26 | 25 | 28 |
-| 5th | 34 | 33 | 32 | 31 | 34 |
+| 1st | 10 | 9 | 8 | 7 | 8 |
+| 2nd | 16 | 15 | 14  | 13 | 14 |
+| 3rd | 22 | 21 | 20 | 19 | 20 |
+| 4th | 28 | 27 | 26 | 25 | 26 |
+| 5th | 34 | 33 | 32 | 31 | 32 |
 
 ###### Table 4
 | Parameter | Value Sought |
@@ -81,6 +81,11 @@ ECE382_Lab4
 | Register holding z | r15  |
 | Register holding return value | r12 |
 
+### Cross Language Build Constructs
+* *What is the role of the `extern` directive in a .c file?*
+* * Answer
+* *What is the role of the `.global` directive in an .asm file (used in lines 28-32)?*
+* * Answer
 
 ## Lab
 
