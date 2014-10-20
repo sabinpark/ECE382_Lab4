@@ -83,9 +83,9 @@ ECE382_Lab4
 
 ### Cross Language Build Constructs
 * *What is the role of the `extern` directive in a .c file?*
-  * The `extern` directive is used to call variables and allow these variables to be globally accessible. These variables are *declared* instead of being *defined*, and thus must be called somewhere other than from within the function. Furthermore, when these variables change, they retain their value.
+  * The `extern` directive is used to call variables outside of its function block. These variables are *declared* instead of being *defined*, and thus must be called somewhere other than from within the function. Furthermore, when these variables change, they retain their value. Basically, it allows the .c file to call functions from the .asm files.
 * *What is the role of the `.global` directive in an .asm file (used in lines 28-32)?*
-  * Answer
+  * the `.global` directive is used to make memory labels globally accessible, which means that the memory values can be accessed/referenced from different parts of the build path.
 
 ## Lab
 
