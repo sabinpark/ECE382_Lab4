@@ -70,6 +70,18 @@ ECE382_Lab4
 | 4th |  |  |  |  |  |
 | 5th |  |  |  |  |  |
 
+###### Table 4
+| Parameter | Value Sought |
+|:-:|:-:|
+| Starting address of ```func``` |  |
+| Ending address of ```func``` |  |
+| Register holding w |  |
+| Register holding x |  |
+| Register holding y |  |
+| Register holding z |  |
+| Register holding return value |  |
+
+
 ## Lab
 
 ## Documentation
