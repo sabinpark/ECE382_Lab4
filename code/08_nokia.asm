@@ -23,9 +23,10 @@ STE2007_POWERCTRL_ALL_ON:		.equ	0x07
 STE2007_DISPLAYNORMAL:			.equ	0xA6
 STE2007_DISPLAYON:				.equ	0xAF
 
-PADDLE_WIDTH:					.equ	4
+PADDLE_WIDTH:					.equ	2
 PADDLE_HEIGHT:					.equ	3
 
+PADDLE_START_X:					.equ	4
 
 ;pattern:						.byte	0x3C, 0x7E, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C		; solid circle
 ;pattern_inv:					.byte	0xC3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x81, 0xC3		; solid circle (inverse)
@@ -476,7 +477,8 @@ nextRow:
 
 	mov		#PADDLE_WIDTH, R8			; column counter
 
-	clr		R13
+	;clr		R13
+	mov		#PADDLE_START_X, R13
 
 	call	#setAddress					; move cursor to upper left corner of block
 

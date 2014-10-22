@@ -50,11 +50,19 @@ ball_t moveBall(ball_t ball, paddle_t paddle) {
 		ball.velocity.y *= -1;
 	}
 
+	outOfBounds(ball);
+
 	// makes the ball move
 	ball.position.x += ball.velocity.x;
 	ball.position.y += ball.velocity.y;
 
 	return ball;
+}
+
+c outOfBounds(ball_t ball) {
+	if(ball.position.x <= 0) {
+		while(1);
+	}
 }
 
 c topCollision(ball_t ball) {
@@ -78,8 +86,8 @@ c leftCollision(ball_t ball, paddle_t paddle) {
 
 	if(ball.position.x <= (paddle.position.x + paddle.width) &&
 			ball.position.x >= 0  &&
-			ball.position.y <= (paddle.position.y))// &&
-			//(ball.position.y-1) >= (paddle.position.y - 3))//paddle.height))
+			ball.position.y >= (paddle.position.y) &&	// less than the paddle
+			(ball.position.y + 1) <= (paddle.position.y + 3))//paddle.height))
 		return TRUE;
 	else
 		return FALSE;

@@ -19,7 +19,7 @@ static unsigned char paddle_x, paddle_y;
 #define		AUX_BUTTON		(P2IN & BIT3)
 #define		LEFT_BUTTON		(P2IN & BIT2)
 #define		RIGHT_BUTTON	(P2IN & BIT1)
-#define		PADDLE_WIDTH	2
+#define		PADDLE_WIDTH	1
 #define		PADDLE_HEIGHT	3
 
 void main() {
@@ -51,7 +51,7 @@ void main() {
 
 		drawBlock(pong.position.y, pong.position.x, pong.color);
 
-		drawPaddle(paddle_y, paddle_x);
+		drawPaddle(ping.position.y, ping.position.x);
 
 		drawGround();
 
@@ -67,16 +67,17 @@ void main() {
 			} else if (UP_BUTTON == 0) {
 				while(UP_BUTTON == 0);
 
-				if(paddle_y > 0)
-					paddle_y -= 1;
+				if(ping.position.y > 0)
+					ping.position.y -= 1;
 
 				button_press = TRUE;
 
 			} else if (DOWN_BUTTON == 0) {
 				while(DOWN_BUTTON == 0);
 
-				if(paddle_y < 8-3)
-					paddle_y += 1;
+				if(ping.position.y < 8-3)
+					ping.position.y += 1;
+
 				button_press = TRUE;
 			}
 

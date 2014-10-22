@@ -21,7 +21,7 @@
 #define START_X_VEL 1
 #define START_Y_VEL 1
 
-#define PADDLE_START_X 0
+#define PADDLE_START_X 2
 #define PADDLE_START_Y 4  // 2
 
 typedef char c;
@@ -49,6 +49,7 @@ ball_t moveBall(ball_t ball, paddle_t paddle);
 vector2d_t initVector(int x, int y);
 paddle_t createPaddle(int xPos, int yPos, int width, int height);
 
+c outOfBounds(ball_t ball);
 c topCollision(ball_t ball);
 c bottomCollision(ball_t ball);
 c leftCollision(ball_t ball, paddle_t paddle);
