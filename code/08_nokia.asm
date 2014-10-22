@@ -31,7 +31,36 @@ STE2007_DISPLAYON:				.equ	0xAF
 	.global initNokia
 	.global clearDisplay
 	.global drawBlock
+	.global animationDelay
 
+
+;-------------------------------------------------------------------------------
+;	Name:		animationDelay
+;	Inputs:		none
+;	Outputs:	none
+;	Purpose:	creates a delay between block movements
+;-------------------------------------------------------------------------------
+animationDelay:
+
+	push	R4
+	push	R5
+
+	mov		#300, R4		; 300 iterations of the short delay
+
+innerDelay:
+	mov		#04FFh, R5		; a short delay (supposed 20 ms)
+
+decrementInner:
+	dec		R5
+	jnz		decrementInner
+
+	dec		R4
+	jnz		innerDelay
+
+	pop		R5
+	pop		R4
+
+	ret
 
 ;-------------------------------------------------------------------------------
 ;	Name:		initNokia		68(rows)x92(columns)
@@ -54,12 +83,14 @@ delayNokiaResetLow:
 	jne		delayNokiaResetLow
 	bis.b	#LCD1202_RESET_PIN, &P2OUT
 
+
 	; This loop creates a nice 20mS delay for the reset high pulse
 	mov		#04FFh, R12
 delayNokiaResetHigh:
 	dec		R12
 	jne		delayNokiaResetHigh
 	bic.b	#LCD1202_CS_PIN, &P1OUT
+
 
 	; First write seems to come out a bit garbled - not sure cause
 	; but it can't hurt to write a reset command twice
