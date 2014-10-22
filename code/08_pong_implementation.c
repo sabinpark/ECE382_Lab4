@@ -50,7 +50,7 @@ ball_t moveBall(ball_t ball, paddle_t paddle) {
 		ball.velocity.y *= -1;
 	}
 
-	outOfBounds(ball);
+	outOfBounds(ball);		// check if the ball goes behind the paddle
 
 	// makes the ball move
 	ball.position.x += ball.velocity.x;
@@ -59,6 +59,7 @@ ball_t moveBall(ball_t ball, paddle_t paddle) {
 	return ball;
 }
 
+// if the ball gets out of bounds, just get into an infinite loop to signal GAME OVER
 c outOfBounds(ball_t ball) {
 	if(ball.position.x <= 0) {
 		while(1);
@@ -81,13 +82,13 @@ c bottomCollision(ball_t ball) {
 		return FALSE;
 }
 
+// paddle parameter was added to allow comparison between paddle and ball positions
 c leftCollision(ball_t ball, paddle_t paddle) {
-	// if the ball hits the left edge, reverse the x velocity
+	// if the ball hits the paddle, reverse the x velocity
 
-	if(ball.position.x <= (paddle.position.x + paddle.width) &&
-			ball.position.x >= 0  &&
-			ball.position.y >= (paddle.position.y) &&	// less than the paddle
-			(ball.position.y + 1) <= (paddle.position.y + 3))//paddle.height))
+	if(ball.position.x <= (paddle.position.x + paddle.width) &&		// ball is behind paddle (to the left)
+			ball.position.y >= (paddle.position.y) &&				// ball is below the top of the paddle
+			(ball.position.y + 1) <= (paddle.position.y + 3))		// ball is above the bottom of the paddle
 		return TRUE;
 	else
 		return FALSE;

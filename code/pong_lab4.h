@@ -9,28 +9,30 @@
 #ifndef PONG_LAB4_H_
 #define PONG_LAB4_H_
 
-#define SCREEN_WIDTH 48-4 //11
+#define SCREEN_WIDTH 48-4		// since I implemented the smooth animation, I had to divide 96 by 2
 #define SCREEN_HEIGHT 7
 
 #define TRUE 1
 #define FALSE 0
 
-#define START_X_POS 20 // 4
+#define START_X_POS 20			// ball's starting x and y pos
 #define START_Y_POS 3
 
-#define START_X_VEL 1
+#define START_X_VEL 1			// ball's starting x and y vel
 #define START_Y_VEL 1
 
-#define PADDLE_START_X 2
-#define PADDLE_START_Y 4  // 2
+#define PADDLE_START_X 2		// paddle's starting x and y pos
+#define PADDLE_START_Y 4
 
-typedef char c;
+typedef char c;					// arbitrarily named; used for the collision detections
 
+// vector
 typedef struct {
     int x;
     int y;
 } vector2d_t;
 
+// ball
 typedef struct {
     vector2d_t position;
     vector2d_t velocity;
@@ -38,6 +40,7 @@ typedef struct {
     unsigned char color;
 } ball_t;
 
+// paddle
 typedef struct {
     vector2d_t position;
     int width;
