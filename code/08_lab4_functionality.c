@@ -6,6 +6,11 @@ extern void initNokia();
 extern void clearDisplay();
 extern void drawBlock(unsigned char row, unsigned char col, unsigned char color);
 extern void animationDelay();
+extern void	initPaddle();
+extern void	drawPaddle(unsigned char row, unsigned char col);
+extern void drawGround();
+
+static unsigned char paddle_x, paddle_y;
 
 #define		TRUE			1
 #define		FALSE			0
@@ -14,11 +19,16 @@ extern void animationDelay();
 #define		AUX_BUTTON		(P2IN & BIT3)
 #define		LEFT_BUTTON		(P2IN & BIT2)
 #define		RIGHT_BUTTON	(P2IN & BIT1)
-
+#define		PADDLE_WIDTH	2
+#define		PADDLE_HEIGHT	3
 
 void main() {
 
 	unsigned char button_press;
+
+
+	paddle_x = PADDLE_START_X;
+	paddle_y = PADDLE_START_Y;
 
 	// === Initialize system ================================================
 	IFG1=0; /* clear interrupt flag1 */
@@ -26,6 +36,7 @@ void main() {
 	button_press = FALSE;
 
 	ball_t pong = createBall(START_X_POS, START_Y_POS, START_X_VEL, START_Y_VEL, 4, 1);
+	paddle_t ping = createPaddle(paddle_x, paddle_y, PADDLE_WIDTH, PADDLE_HEIGHT);
 
 	init();
 	initNokia();
@@ -36,9 +47,14 @@ void main() {
 	while(1) {
 
 		clearDisplay();
-		pong = moveBall(pong);
+		pong = moveBall(pong, ping);
 
 		drawBlock(pong.position.y, pong.position.x, pong.color);
+
+		drawPaddle(paddle_y, paddle_x);
+
+		drawGround();
+
 		animationDelay();
 
     		if (AUX_BUTTON == 0) {
@@ -47,12 +63,24 @@ void main() {
 				if(pong.color == 1) pong.color = 0;
 				else if(pong.color == 0) pong.color = 1;
 				button_press = TRUE;
+
+			} else if (UP_BUTTON == 0) {
+				while(UP_BUTTON == 0);
+
+				if(paddle_y > 0)
+					paddle_y -= 1;
+
+				button_press = TRUE;
+
+			} else if (DOWN_BUTTON == 0) {
+				while(DOWN_BUTTON == 0);
+
+				if(paddle_y < 8-3)
+					paddle_y += 1;
+				button_press = TRUE;
 			}
 
-			if (button_press) {
+			if (button_press)
 				button_press = FALSE;
-				//clearDisplay();
-				//drawBlock(y,x,c);
-			}
 		}
 }

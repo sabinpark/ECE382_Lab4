@@ -8,7 +8,6 @@
 ;-------------------------------------------------------------------------------
 	.cdecls C,LIST,"msp430.h"		; BOILERPLATE	Include device header file
 
-
 LCD1202_SCLK_PIN:				.equ	20h		; P1.5
 LCD1202_MOSI_PIN: 				.equ	80h		; P1.7
 LCD1202_CS_PIN:					.equ	01h		; P1.0
@@ -23,6 +22,10 @@ STE2007_POWERCONTROL:			.equ	0x28
 STE2007_POWERCTRL_ALL_ON:		.equ	0x07
 STE2007_DISPLAYNORMAL:			.equ	0xA6
 STE2007_DISPLAYON:				.equ	0xAF
+
+PADDLE_WIDTH:					.equ	4
+PADDLE_HEIGHT:					.equ	3
+
 
 ;pattern:						.byte	0x3C, 0x7E, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C		; solid circle
 ;pattern_inv:					.byte	0xC3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x81, 0xC3		; solid circle (inverse)
@@ -42,9 +45,11 @@ pattern_inv:					.byte	0xC3, 0xBD, 0x5A, 0x66, 0x66, 0x5A, 0xBD, 0xC3		; x-ball 
 	.global init
 	.global initNokia
 	.global clearDisplay
-	.global drawBlock
-	.global animationDelay
-
+	.global drawBlock					; draw the block
+	.global animationDelay				; calls the animation delay
+	.global	initPaddle					; initializes the padde location
+	.global drawPaddle					; draw the paddle
+	.global	drawGround					; draw the ground
 
 ;-------------------------------------------------------------------------------
 ;	Name:		animationDelay
@@ -57,16 +62,16 @@ animationDelay:
 	push	R4
 	push	R5
 
-	mov		#400, R4		; 400 iterations of the short delay
+	mov		#200, R4		; 200 iterations of the short delay
 
 innerDelay:
 	mov		#04FFh, R5		; a short delay (supposed 20 ms)
 
 decrementInner:
-	dec		R5
+	dec		R5				; decrement the delay
 	jnz		decrementInner
 
-	dec		R4
+	dec		R4				; decrement the number of delays
 	jnz		innerDelay
 
 	pop		R5
@@ -103,13 +108,11 @@ delayNokiaResetHigh:
 	jne		delayNokiaResetHigh
 	bic.b	#LCD1202_CS_PIN, &P1OUT
 
-
 	; First write seems to come out a bit garbled - not sure cause
 	; but it can't hurt to write a reset command twice
 	mov		#NOKIA_CMD, R12
 	mov		#STE2007_RESET, R13
 	call	#writeNokiaByte
-
 
 	mov		#NOKIA_CMD, R12
 	mov		#STE2007_RESET, R13
@@ -178,7 +181,6 @@ init:
 
 	ret
 
-
 ;-------------------------------------------------------------------------------
 ;	Name:		writeNokiaByte
 ;	Inputs:		R12 selects between (1) Data or (0) Command string
@@ -225,7 +227,6 @@ pollSPI:
 
 	ret
 
-
 ;-------------------------------------------------------------------------------
 ;	Name:		clearDisplay
 ;	Inputs:		none
@@ -261,6 +262,7 @@ clearLoop:
 	call	#setAddress
 
 		;call	#drawGround
+
 
 	pop		R13
 	pop		R12
@@ -308,7 +310,6 @@ setAddress:
 	pop		R12
 
 	ret
-
 
 ;-------------------------------------------------------------------------------
 ;	Name:		reDrawDisplay
@@ -384,7 +385,6 @@ nextDD:
 
 		ret						; bye-bye
 
-
 ;-------------------------------------------------------------------------------
 ;	Name:		drawBlock
 ;	Inputs:		R12 row to draw block
@@ -408,8 +408,8 @@ drawBlock:
 	mov.w	#pattern_inv, R9
 
 
-	rla.w	R13					; the column address needs to be multiplied
-	rla.w	R13					; by 8 in order to convert it into a
+	;rla.w	R13					; the column address needs to be multiplied
+	;rla.w	R13					; by 8 in order to convert it into a
 	rla.w	R13					; pixel address.
 	call	#setAddress			; move cursor to upper left corner of block
 
@@ -448,21 +448,96 @@ switch:
 
 	ret							; return whence you came
 
+;-------------------------------------------------------------------------------
+;	Name:		drawPaddle
+;	Inputs:		R12 row to draw paddle
+;				R13	column to draw paddle
+;	Outputs:	none
+;	Purpose:	draw an 8x24 block of black pixels at screeen cordinates	8*row,8*col
+;				The display screen, for the purposes of this routine, is divided
+;				into 8x8 blocks.  Consequently the codinate system, for the purposes
+;				of this routine, start in the upper left of the screen @ (0,0) and
+;				end @ (11,7) in the lower right of the display.
+;	Registers:	R8	column counter to draw all 8 pixel columns
+;				R7	row counter to draw 3 rows (height of the paddle)
+;-------------------------------------------------------------------------------
+drawPaddle:
+	push	R12
+	push	R13
+	push	R7
+	push	R8
+	push	R10
+
+	mov		R12, R10					; R10 is the temp row address holder
+
+	mov		#PADDLE_HEIGHT, R7			; row counter
+
+nextRow:
+
+	mov		#PADDLE_WIDTH, R8			; column counter
+
+	clr		R13
+
+	call	#setAddress					; move cursor to upper left corner of block
+
+	mov		#1, R12
+	mov		#0xFF, R13
+
+continuePaddle:
+	call	#writeNokiaByte				; draw the pixels
+
+	dec		R8
+	jnz		continuePaddle
+
+	inc		R10
+	mov		R10, R12
+	dec		R7
+	jnz		nextRow
+
+	pop		R10
+	pop		R8
+	pop		R7
+	pop		R13
+	pop		R12
+
+	ret							; return whence you came
+
+;-------------------------------------------------------------------------------
+;	Name:		drawGround
+;	Inputs:		R12 row to draw ground
+;				R13	column to draw ground
+;	Outputs:	none
+;	Purpose:	draw an 8 block x 96 pixels of black pixels at screeen cordinates
+;	Registers:	R8	column counter to draw all 96 pixel columns
+;-------------------------------------------------------------------------------
 drawGround:
 	push	R12
 	push	R13
+	push	R8			; counter to draw the columns
 
-	mov		#8, R12
-	mov		#0, R13
+	mov		#8, R12		; 9th row (the cut-off row)
+	mov		#0, R13		; start from the left-most side of the screen
 
-nextCol:
+	mov		#96, R8
+
 	call	#setAddress
+
+	mov		#1, R12
+
+	tst		R14
+	jnz		darkGND
+lightGND:
+	mov		#0x00, R13
+	jmp		nextCol
+darkGND:
+	mov		#0x0F, R13
+nextCol:
 	call	#writeNokiaByte
 
-	inc		R13
-	cmp		#92, R13
+	dec		R8
 	jnz		nextCol
 
+	pop		R8
 	pop		R13
 	pop		R12
 

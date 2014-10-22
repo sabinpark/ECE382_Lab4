@@ -17,6 +17,16 @@ vector2d_t initVector(int x, int y) {
 	return thisVector;
 }
 
+paddle_t createPaddle(int xPos, int yPos, int width, int height) {
+	paddle_t thisPaddle;
+
+	thisPaddle.position = initVector(xPos, yPos);
+	thisPaddle.width = width;
+	thisPaddle.height = height;
+
+	return thisPaddle;
+}
+
 ball_t createBall(int xPos, int yPos, int xVel, int yVel, unsigned char radius, unsigned char color) {
 	ball_t thisBall;
 
@@ -29,9 +39,9 @@ ball_t createBall(int xPos, int yPos, int xVel, int yVel, unsigned char radius, 
 	return thisBall;
 }
 
-ball_t moveBall(ball_t ball) {
+ball_t moveBall(ball_t ball, paddle_t paddle) {
 	// if the ball hits the left or right edge, reverse the x velocity
-	if(leftCollision(ball) || rightCollision(ball)) {
+	if(leftCollision(ball, paddle) || rightCollision(ball)) {
 		ball.velocity.x *= -1;
 	}
 
@@ -63,9 +73,13 @@ c bottomCollision(ball_t ball) {
 		return FALSE;
 }
 
-c leftCollision(ball_t ball) {
+c leftCollision(ball_t ball, paddle_t paddle) {
 	// if the ball hits the left edge, reverse the x velocity
-	if(ball.position.x <= 0)
+
+	if(ball.position.x <= (paddle.position.x + paddle.width) &&
+			ball.position.x >= 0  &&
+			ball.position.y <= (paddle.position.y))// &&
+			//(ball.position.y-1) >= (paddle.position.y - 3))//paddle.height))
 		return TRUE;
 	else
 		return FALSE;
