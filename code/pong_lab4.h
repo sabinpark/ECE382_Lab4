@@ -15,6 +15,12 @@
 #define TRUE 1
 #define FALSE 0
 
+#define START_X_POS 4
+#define START_Y_POS 3
+
+#define START_X_VEL 1
+#define START_Y_VEL 1
+
 typedef char c;
 
 typedef struct {

@@ -24,6 +24,18 @@ STE2007_POWERCTRL_ALL_ON:		.equ	0x07
 STE2007_DISPLAYNORMAL:			.equ	0xA6
 STE2007_DISPLAYON:				.equ	0xAF
 
+;pattern:						.byte	0x3C, 0x7E, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C		; solid circle
+;pattern_inv:					.byte	0xC3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x81, 0xC3		; solid circle (inverse)
+
+pattern:						.byte	0x3C, 0x42, 0xA5, 0x99, 0x99, 0xA5, 0x42, 0x3C		; x-ball
+pattern_inv:					.byte	0xC3, 0xBD, 0x5A, 0x66, 0x66, 0x5A, 0xBD, 0xC3		; x-ball (inverse)
+
+;pattern:						.byte	0x1E, 0x21, 0x41, 0x82, 0x81, 0x41, 0x21, 0x1E		; heart
+;pattern_inv:					.byte	0xE1, 0xDE, 0xBE, 0x7D, 0x7E, 0xBE, 0xDE, 0xE1		; heart (inverse)
+
+;pattern:						.byte	0xC6, 0x89, 0x89, 0x89, 0x91, 0x91, 0x91, 0x63		; heart
+;pattern_inv:					.byte	0x39, 0x76, 0x76, 0x76, 0x6E, 0x6E, 0x6E, 0x9C		; heart (inverse)
+
  	.text								; BOILERPLATE	Assemble into program memory
 	.retain								; BOILERPLATE	Override ELF conditional linking and retain current section
 	.retainrefs							; BOILERPLATE	Retain any sections that have references to current section
@@ -45,7 +57,7 @@ animationDelay:
 	push	R4
 	push	R5
 
-	mov		#300, R4		; 300 iterations of the short delay
+	mov		#400, R4		; 400 iterations of the short delay
 
 innerDelay:
 	mov		#04FFh, R5		; a short delay (supposed 20 ms)
@@ -230,8 +242,14 @@ clearDisplay:
 	call	#setAddress
 
 	mov.w	#0x01, R12			; write a "clear" set of pixels
+	tst		R14
+	jnz		bgLIGHT
+bgDARK:
+	mov.w	#0xFF, R13			; make the background DARK
+	jmp		bgChanged
+bgLIGHT:
 	mov.w	#0x00, R13			; to every byt on the display
-
+bgChanged:
 	mov.w	#0x360, R11			; loop counter
 clearLoop:
 	call	#writeNokiaByte
@@ -241,6 +259,8 @@ clearLoop:
 	mov.w	#0x00, R12			; set display address to 0,0
 	mov.w	#0x00, R13
 	call	#setAddress
+
+		;call	#drawGround
 
 	pop		R13
 	pop		R12
@@ -381,7 +401,12 @@ drawBlock:
 	push	R5
 	push	R12
 	push	R13
-		push R14
+	push	R8
+	push	R9
+
+	mov.w	#pattern, R8
+	mov.w	#pattern_inv, R9
+
 
 	rla.w	R13					; the column address needs to be multiplied
 	rla.w	R13					; by 8 in order to convert it into a
@@ -389,25 +414,56 @@ drawBlock:
 	call	#setAddress			; move cursor to upper left corner of block
 
 	mov		#1, R12
-		; if R14 is 0, de-color (unfill)
-		tst		R14
-		jnz		fill
+	; if R14 is 0, de-color (unfill)
+	tst		R14
+	jnz		fill
 unfill:
-		mov		#0x00, R13
-		jmp		continue
-		; else if R14 is 1, color (fill)
+	mov.b	@R9, R13
+	jmp		continue
+	; else if R14 is 1, color (fill)
 fill:
-	mov		#0xFF, R13
+	mov.b	@R8, R13
 continue:
 	mov.w	#0x08, R5			; loop all 8 pixel columns
 loopdB:
 	call	#writeNokiaByte		; draw the pixels
+	tst		R14
+	jnz		regular
+inverse:
+	inc		R9
+	mov.b	@R9, R13
+	jmp		switch
+regular:
+	inc		R8
+	mov.b	@R8, R13
+switch:
 	dec.w	R5
 	jnz		loopdB
 
-		pop		R14
+	pop		R9
+	pop		R8
 	pop		R13
 	pop		R12
 	pop		R5
 
 	ret							; return whence you came
+
+drawGround:
+	push	R12
+	push	R13
+
+	mov		#8, R12
+	mov		#0, R13
+
+nextCol:
+	call	#setAddress
+	call	#writeNokiaByte
+
+	inc		R13
+	cmp		#92, R13
+	jnz		nextCol
+
+	pop		R13
+	pop		R12
+
+	ret
