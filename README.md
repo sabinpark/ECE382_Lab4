@@ -106,4 +106,6 @@ ECE382_Lab4
 ### Prelab
 None
 ### Lab
-None
+* None.
+* commit history is innacurate due to file over-writing.
+
