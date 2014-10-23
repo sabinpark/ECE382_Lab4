@@ -1,3 +1,13 @@
+//-------------------------------------------------------------------------------
+//	Name:		C2C Sabin Park
+//	Term:		Fall 2014
+//	MCU:		MSP430G2553
+//	Date:		21 October 2014
+//	Note:		Lab 4: Main File for Required Functionality
+//				Use this file with:
+//					08_nokia_R.asm
+//-------------------------------------------------------------------------------
+
 #include <msp430g2553.h>
 
 extern void init();
@@ -27,7 +37,7 @@ void main() {
 	init();
 	initNokia();
 	clearDisplay();
-	x=4;		y=4;		c=1;
+	x=4;		y=4;		c=1;	// third parameter, c, created for color
 	drawBlock(y,x,c);
 
 	while(1) {
@@ -57,7 +67,7 @@ void main() {
 
 			if (button_press) {
 				button_press = FALSE;
-				//clearDisplay();
+				//clearDisplay();   // commented out because we want to see what we draw
 				drawBlock(y,x,c);
 			}
 		}

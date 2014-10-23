@@ -1,8 +1,9 @@
 ;-------------------------------------------------------------------------------
-;	Chris Coulston
+;	Chris Coulston (edited by Sabin Park)
 ;	Fall 2014
 ;	MSP430G2553
-;	Put some pixels on the Nokia 1202 Diaplsy
+;	Put some pixels on the Nokia 1202 Display
+;	NOTE: Only changes I made were in drawBlock to change the color of the fill.
 ;-------------------------------------------------------------------------------
 	.cdecls C,LIST,"msp430.h"		; BOILERPLATE	Include device header file
 
