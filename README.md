@@ -97,7 +97,7 @@ ECE382_Lab4
 | A Functionality | Complete | 22 October 14 |
 | Bonus Functionality | Complete | 21/22 October 14 |
 
-*The functionality part of Lab 4 was checked and signed off by Dr. Coulston during class on 22 October 2014*
+*All of the functionality of Lab 4 was checked and signed off by Dr. Coulston during class on 22 October 2014*
 
 *BONUS*: I received full points for *circle* and *inverted* bonus functionalities. I received half points for the *fine movement* aspect of the bonus functionality.
 
