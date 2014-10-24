@@ -117,7 +117,61 @@ The required funcitonality required me to create an etch-a-sketch-esque program 
 
 I made very minimal changes to the programs provided for me to achieve the required funcitonality.
 
-In drawBlock (from the assembly code), I noticed that the program would move the value of 0xFF into R13, which would allow the block to have all 8 bits *filled* instead of *cleared*. And so, I created a simple if-else structure which would check for a flag (set by the AUX button). The flag was initially set to a value of 1 (to symbolize FILL). When the AUX button is pressed, the flag would equal 0 (symbolizing CLEAR). Depending on the flag, the value moved into R13 would be either 0xFF (flag = 1) or 0x00 (flag = 0).
+In *drawBlock* (from the assembly code), I noticed that the program would move the value of 0xFF into R13, which would allow the block to have all 8 bits *filled* instead of *cleared*. And so, I created a simple if-else structure which would check for a flag (set by the AUX button). The flag was initially set to a value of 1 (to symbolize FILL). When the AUX button is pressed, the flag would equal 0 (symbolizing CLEAR). Depending on the flag, the value moved into R13 would be either 0xFF (flag = 1) or 0x00 (flag = 0).
+
+Here is the modified *drawBlock* subroutine:
+```
+drawBlock:
+	push	R5
+	push	R12
+	push	R13
+	push	R14
+
+	rla.w	R13					; the column address needs multiplied
+	rla.w	R13					; by 8in order to convert it into a
+	rla.w	R13					; pixel address.
+	call	#setAddress			; move cursor to upper left corner of block
+
+	mov		#1, R12
+
+	tst		R14
+	jz		invert
+	; if @R14 = 1, keep it the same
+	mov		#0xFF, R13
+	jmp		continue
+invert:
+	; else if @R14 = 0, invert
+	mov		#0x00, R13
+continue:
+	mov.w	#0x08, R5			; loop all 8 pixel columns
+loopdB:
+	call	#writeNokiaByte		; draw the pixels
+	dec.w	R5
+	jnz		loopdB
+	
+	pop		R14
+	pop		R13
+	pop		R12
+	pop		R5
+
+	ret							; return whence you came
+```
+
+As we see from *drawBlock*, there is an if-else statement that fills or clears pixels depending on the flag.
+
+You may notice that R14 seemed to come out of nowhere. From the main.c file, we may see that I added another parameter in the *drawBlock* method. Instead of `drawBlock(y, x)`, it is now `drawBlock(y, x, c)`. The *c* parameter is short for *color*. As we see below, `c = 1` means *fill* and `c = 0` means *clear*. The R14 parameter takes in the value of *c* into the subroutine. Since y is R12 and x is R13, the next parameter is automatically stored into R14.
+
+```
+ //... added at the end of the button-checking if-else structure
+ else if (AUX_BUTTON == 0) {
+				while(AUX_BUTTON == 0);
+				if(c == 1) c = 0;
+				else if(c == 0) c = 1;
+				button_press = TRUE;
+			}
+```
+
+After building and debugging my program, I found that the required functionality worked as expected.
 
 ### B Functionality
 For the rest of the lab (including A and Bonus functionality), please include the following files in the build:
@@ -126,7 +180,9 @@ For the rest of the lab (including A and Bonus functionality), please include th
 * 09_pong_implementation.c
 * pong_lab4.h
 
+For B Functionality, I had to make the box move throughout the LCD screen and bounce off the walls appropriately. Since the provided code was pre-designed to move in each direction by 8 pixels, I did not have to worry about changing any values concerning the movement of the block.
 
+Fortunately, I was able to utilize most of Assignment 6. In Assignment 6, I had created a program that takes in a ping pong ball and moves it within the boundaries of the LCD screen.
 
 
 ## Documentation
