@@ -35,6 +35,18 @@ ECE382_Lab4
 
 *NOTE*: maximum lab grade cannot exceed 105 pts :(
 
+### Functionality Update
+| Item | Status | Date |
+|-------|-------|-------|
+| Required Functionality | Complete | 20 October 14 |
+| B Functionality | Complete | 21 October 14 |
+| A Functionality | Complete | 22 October 14 |
+| Bonus Functionality | Complete | 21/22 October 14 |
+
+*All of the functionality of Lab 4 was checked and signed off by Dr. Coulston during class on 22 October 2014*
+
+*BONUS*: I received full points for *circle* and *inverted* bonus functionalities. I received half points for the *fine movement* aspect of the bonus functionality.
+
 ## Prelab
 ### Data Types
 ###### Table 1
@@ -89,17 +101,32 @@ ECE382_Lab4
 
 ## Lab
 
-### Functionality Update
-| Item | Status | Date |
-|-------|-------|-------|
-| Required Functionality | Complete | 20 October 14 |
-| B Functionality | Complete | 21 October 14 |
-| A Functionality | Complete | 22 October 14 |
-| Bonus Functionality | Complete | 21/22 October 14 |
+I was provided with these files for Lab 4:
+* lab4.c
+* nokia.asm
+* simpleLab.c
 
-*All of the functionality of Lab 4 was checked and signed off by Dr. Coulston during class on 22 October 2014*
+*simpleLab.c* was used for the prelab and can be disregarded for the remainder of the lab.
 
-*BONUS*: I received full points for *circle* and *inverted* bonus functionalities. I received half points for the *fine movement* aspect of the bonus functionality.
+### Required Functionality
+For the required functionality, I used nokia.asm and lab4.c (I renamed these files slightly). To run the required functionality please include these files in the build:
+* 08lab4_R.c
+* 08_nokia_R.asm
+
+The required funcitonality required me to create an etch-a-sketch-esque program that drew an 8x8 pixel block on the LCD screen. With the push of the AUX button, the block would be clear, and thus act like an eraser.
+
+I made very minimal changes to the programs provided for me to achieve the required funcitonality.
+
+In drawBlock (from the assembly code), I noticed that the program would move the value of 0xFF into R13, which would allow the block to have all 8 bits *filled* instead of *cleared*. And so, I created a simple if-else structure which would check for a flag (set by the AUX button). The flag was initially set to a value of 1 (to symbolize FILL). When the AUX button is pressed, the flag would equal 0 (symbolizing CLEAR). Depending on the flag, the value moved into R13 would be either 0xFF (flag = 1) or 0x00 (flag = 0).
+
+### B Functionality
+For the rest of the lab (including A and Bonus functionality), please include the following files in the build:
+* 09_lab4_AB.c
+* 09_nokie_AB.asm
+* 09_pong_implementation.c
+* pong_lab4.h
+
+
 
 
 ## Documentation
