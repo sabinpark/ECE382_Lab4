@@ -201,6 +201,41 @@ After running the code, I confirmed that the ball properly bounces off the scree
 
 ### A Functionality
 
+A functionality gave me a little trouble with the paddle movements and the collision detection with the paddle, but the problems were soon resolved.
+
+I started out by drawing a paddle. I pretty much copied and pasted the *drawBox* subroutine and created another subroutine called *drawPaddle*. With the fine movement feature in mind (from the bonus functionality), I made the paddle 3 rows high and 2 pixels wide. In the implementation file, I created a paddle structure that was very similar to the ball structure. The paddle structure had an x and y position, width, and height. In the main.c file, I created an instantiation of the paddle and initialized it with its starting x and y positions, width, and height. I called *drawPaddle* with the appropriate parameters. When the UP or DOWN buttons were pressed, the paddle instantiation's position were also updated.
+
+After I got the paddle to properly draw and move (with user input) on the LCD screen, I proceeded to implement the collision detection.
+
+In the implementation file, I updated the left side of the screen's collision method. 
+
+As shown in the code below, I had to return TRUE only if the ball's y position was between the base and top of the paddle, and when the ball's x position was less than or equal to the right-most edge of the paddle. The specific conditions are shown below:
+```
+// paddle parameter was added to allow comparison between paddle and ball positions
+c leftCollision(ball_t ball, paddle_t paddle) {
+	// if the ball hits the paddle, reverse the x velocity
+
+	if(ball.position.x <= (paddle.position.x + paddle.width) &&	// ball is behind paddle (to the left)
+		ball.position.y >= (paddle.position.y) &&		// ball is below the top of the paddle
+		(ball.position.y + 1) <= (paddle.position.y + 3))	// ball is above the bottom of the paddle
+			return TRUE;
+	else
+			return FALSE;
+}
+```
+
+I also created another method that checked for the situation in which the paddle misses the ball. If this is the case, the program will jump into an infinite loop, which signifies GAME OVER.
+// if the ball gets out of bounds, just get into an infinite loop to signal GAME OVER
+```
+c outOfBounds(ball_t ball) {
+	if(ball.position.x <= 0) {
+		while(1);
+	}
+}
+```
+
+With a little bit of debugging, the ball properly bounced off of the edge of the paddle. I also tested and confirmed that when the paddle misses the ball, the game stops as expected.
+
 ### Bonus Functionality
 I actually completed the bonus functionality before attempting the A functionality.
 
@@ -218,7 +253,6 @@ pattern:		.byte	0x3C, 0x7E, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C		; solid circle
 pattern_inv:		.byte	0xC3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x81, 0xC3		; solid circle (inverse)
 
 ```
-
 I stored the normal pattern into R8 and the inverted pattern into R9. In the *drawBlock* subroutine, instead of storing the hard-set value of 0xFF into R13, I made it so that the program would store the current value of the pattern pointer, and then increment the pattern pointer.
 ```
 	; moves the beginning of the pattern addresses to R8 and R9
@@ -270,7 +304,9 @@ At the top of the assembly file, there are other designs you can try out.
 
 ##### Fine Movement
 
-Fine movement was not as intuitive as the other functionalities. After discussing the different approaches to achieve fine movement, I decided that the best method would be to use some sort of modulus algorithms. However, I wanted 
+Fine movement was not as intuitive as the other functionalities. After discussing the different approaches to achieve fine movement, I decided that the best method would be to use some sort of modulus algorithms. However, I did not want to spend more time than I needed (just for 5 extra points), so I just focused on the fine movement in the horizontal direction.
+
+This was really easy. In the assembly file, under *drawBlock*, the column address was rotated left three times, essentially multiplying the original R13 value by 8. Instead of multiplying by 8, I only multiplied R13 by 2. After adjusting the right-side boundaries of the LCD, I had the ball move much smoother horizontally. Instead of having each movement take 8 pixels, the movments were made 2 pixels at a time. The visual effect was much more pleasing instead of the blocky movements before adding the fine movement functionality.
 
 ## Debugging
 #### Required Functionality
@@ -278,18 +314,21 @@ Fine movement was not as intuitive as the other functionalities. After discussin
 #### B Functionality
 * none
 #### A Functionality
-* forgot to update the drawBox function's parameters to be the ball instantiation's parameters
-* ball was moving back and forth in the middle of the screen
-* had to figure out where the ball's drawing point started from
+* I forgot to update the *drawBox* function's parameters to be the ball instantiation's parameters
+* * This messed up the ball's movements on the LCD screen and made it go crazy (moving left and right just in the middle of the screen). After setting the parameters properly, the ball resumed its normal movements.
+* I had to mess around with the *drawBox* and *drawPaddle* subroutines/methods so that the collision detection methods properly bounced off the ball.
 #### Bonus Functionality
 ###### Inverted Display
+* none
 ###### Circle
+* When I designed the heart pattern and tried to use it in the debugger mode, I found that the heart was upside down. This made me quickly realize that the 2-byte pattern for R13 was drawn from the bottom to the top (not the other way around). Thus, I updated my heart-pattern by vertically flipping it and recalculating the 2-byte values. This made the heart right-side up.
 ###### Fine Movement
+* I struggled with the fine movement in the vertical axis. I ended up just fixing the horizontal axis. Initially, I had trouble in that the ball seemed to bounce within the left quarter of the LCD screen. I soon realized that I had to readjust the defined LCD boundaries as well, not just the velocity values.
 
 ## Documentation
 ### Prelab
-None
+* None
 ### Lab
-* None.
-* commit history is innacurate due to file over-writing.
+* None
+* Commit history is innacurate due to file over-writing
 
