@@ -164,13 +164,12 @@ You may notice that R14 seemed to come out of nowhere. From the main.c file, we 
 ```
  //... added at the end of the button-checking if-else structure
  else if (AUX_BUTTON == 0) {
-				while(AUX_BUTTON == 0);
-				if(c == 1) c = 0;
-				else if(c == 0) c = 1;
-				button_press = TRUE;
-			}
+	while(AUX_BUTTON == 0);
+	if(c == 1) c = 0;
+	else if(c == 0) c = 1;
+	button_press = TRUE;
+}
 ```
-
 After building and debugging my program, I found that the required functionality worked as expected.
 
 ### B Functionality
@@ -182,15 +181,34 @@ For the rest of the lab (including A and Bonus functionality), please include th
 
 For B Functionality, I had to make the box move throughout the LCD screen and bounce off the walls appropriately. Since the provided code was pre-designed to move in each direction by 8 pixels, I did not have to worry about changing any values concerning the movement of the block.
 
-Fortunately, I was able to utilize most of Assignment 6. In Assignment 6, I had created a program that takes in a ping pong ball and moves it within the boundaries of the LCD screen. Please reference the header file and the implementation file. 
+Fortunately, I was able to utilize most of Assignment 6. In Assignment 6, I had created a program that takes in a ball and moves it within the boundaries of the LCD screen. Please reference the header file and the implementation file. 
 
 Using the two files mentioned above, I created an instance of the *ball* inside of *09_lab4_AB.c*:
 ```
 ball_t pong = createBall(START_X_POS, START_Y_POS, START_X_VEL, START_Y_VEL, 4, 1);
 ```
 
-Also, instead of drawing the block with the parameters passed from the main.c file, I altered the *drawBox* subroutine to take in the ball instance's dynamic x and y positions.
+Also, instead of drawing the block with the parameters passed from the main.c file, I altered the *drawBox* subroutine to take in the ball instance's dynamic x and y positions. Therefore, the ball drawn on the LCD screen will match the constantly updating movements of the ball instantiation.
 
+To account for the boundary collisions, I created several methods in the implementation file. These methods return TRUE or FALSE depending on if the ball moved out of the top, bottom, left, and right boundaries. A method called *moveBall* utilized these methods and changed the ball's x and y velocity components when the ball touches a wall. Inside of the main.c file, I used a while loop and called *moveBall* so that the ball would continue to move around the screen as long as the program was running.
+
+##### Ground/Floor
+Currently, the ball seems does not touch the bottom of the screen before bouncing back up. This is because there are 9 rows, but the 9th row is cut-off. Therefore, I wanted to draw the lower boundary and make it seem like the ball was actually bouncing off of the "ground" or "floor".
+
+I used the code from *drawBox* and adjusted it a little bit to draw a 96 pixel wide x 4 pixel high block of filled-in pixels to act as the "ground". I created a new subroutine called *drawGround*. Everything else is pretty self-explanatory. 
+
+After running the code, I confirmed that the ball properly bounces off the screen.
+
+### A Functionality
+
+### Bonus Functionality
+I actually completed the bonus functionality before attempting the A functionality.
+
+##### Inverted Display
+
+##### Circle
+
+##### Fine Movement
 
 ## Documentation
 ### Prelab
