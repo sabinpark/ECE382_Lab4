@@ -311,23 +311,29 @@ This was really easy. In the assembly file, under *drawBlock*, the column addres
 ## Debugging
 #### Required Functionality
 * none
+
 #### B Functionality
 * none
+
 #### A Functionality
 * I forgot to update the *drawBox* function's parameters to be the ball instantiation's parameters
 * * This messed up the ball's movements on the LCD screen and made it go crazy (moving left and right just in the middle of the screen). After setting the parameters properly, the ball resumed its normal movements.
 * I had to mess around with the *drawBox* and *drawPaddle* subroutines/methods so that the collision detection methods properly bounced off the ball.
+
 #### Bonus Functionality
 ###### Inverted Display
 * none
+
 ###### Circle
 * When I designed the heart pattern and tried to use it in the debugger mode, I found that the heart was upside down. This made me quickly realize that the 2-byte pattern for R13 was drawn from the bottom to the top (not the other way around). Thus, I updated my heart-pattern by vertically flipping it and recalculating the 2-byte values. This made the heart right-side up.
+
 ###### Fine Movement
 * I struggled with the fine movement in the vertical axis. I ended up just fixing the horizontal axis. Initially, I had trouble in that the ball seemed to bounce within the left quarter of the LCD screen. I soon realized that I had to readjust the defined LCD boundaries as well, not just the velocity values.
 
 ## Documentation
 ### Prelab
 * None
+
 ### Lab
 * None
 * Commit history is innacurate due to file over-writing
