@@ -205,10 +205,86 @@ After running the code, I confirmed that the ball properly bounces off the scree
 I actually completed the bonus functionality before attempting the A functionality.
 
 ##### Inverted Display
+The first bonus functionality I attempted was the *Inverted Display*. This was relatively easy since I pretty much had a simple version of this functionality from the required part. I adjusted the subroutine, *clearDisplay*, from the assembly file. I used the same if-else structure from the required functionality, and instead of just "clearing" the box color, I also "uncleared" (filled) the background pixels. I also inverted the ground color as well. 
+
+Just like from the required functionality, these inversions were flagged using R14. With the press of the AUX button, the flag was set on and off.
 
 ##### Circle
+Changing the shape of the box was relatively simple as well. I saw that the original code for drawing the box used a for-loop that counted down from 8 to 0. This was used to draw 8 columns of the 1x8 pixel section. Instead of drawing the same 0xFF eight times, I stored a pattern into ROM and called that pattern as I drew my *box*.
+
+I stored the following pattern first:
+```
+pattern:		.byte	0x3C, 0x7E, 0xFF, 0xFF, 0xFF, 0xFF, 0x7E, 0x3C		; solid circle
+pattern_inv:		.byte	0xC3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x81, 0xC3		; solid circle (inverse)
+
+```
+
+I stored the normal pattern into R8 and the inverted pattern into R9. In the *drawBlock* subroutine, instead of storing the hard-set value of 0xFF into R13, I made it so that the program would store the current value of the pattern pointer, and then increment the pattern pointer.
+```
+	; moves the beginning of the pattern addresses to R8 and R9
+	mov.w	#pattern, R8
+	mov.w	#pattern_inv, R9
+
+	; I only rotated once because I wanted a smoother animation
+	;rla.w	R13					; the column address needs to be multiplied
+	;rla.w	R13					; by 8 in order to convert it into a
+	rla.w	R13					; pixel address.
+	call	#setAddress			; move cursor to upper left corner of block
+
+	mov		#1, R12
+	; if R14 is 0, de-color (unfill)
+	tst		R14
+	jnz		fill
+unfill:
+	mov.b	@R9, R13
+	jmp		continue
+	; else if R14 is 1, color (fill)
+fill:
+	mov.b	@R8, R13
+continue:
+	mov.w	#0x08, R5			; loop all 8 pixel columns
+loopdB:
+	call	#writeNokiaByte		; draw the pixels
+	tst		R14
+	jnz		regular
+inverse:
+	inc		R9
+	mov.b	@R9, R13
+	jmp		switch
+regular:
+	inc		R8
+	mov.b	@R8, R13
+switch:
+	dec.w	R5
+	jnz		loopdB
+```
+
+As expected, the circle was drawn properly. By using the inverted pattern when the inversion flag is set, the program properly drew the inverted circle as well.
+
+I then got creative and decided to try out different patterns as well. To test these out, feel free to comment/uncomment the desired/undesired patterns at the top of the assembly file.
+
+The image below shows a few preliminary designs with the non-inverted patterns:
+![alt test](https://github.com/sabinpark/ECE382_Lab4/blob/master/images/ball_designs.png "ball designs")
+
+At the top of the assembly file, there are other designs you can try out.
 
 ##### Fine Movement
+
+Fine movement was not as intuitive as the other functionalities. After discussing the different approaches to achieve fine movement, I decided that the best method would be to use some sort of modulus algorithms. However, I wanted 
+
+## Debugging
+#### Required Functionality
+* none
+#### B Functionality
+* none
+#### A Functionality
+* forgot to update the drawBox function's parameters to be the ball instantiation's parameters
+* ball was moving back and forth in the middle of the screen
+* had to figure out where the ball's drawing point started from
+#### Bonus Functionality
+###### Inverted Display
+###### Circle
+###### Fine Movement
 
 ## Documentation
 ### Prelab
