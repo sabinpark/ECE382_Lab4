@@ -182,7 +182,14 @@ For the rest of the lab (including A and Bonus functionality), please include th
 
 For B Functionality, I had to make the box move throughout the LCD screen and bounce off the walls appropriately. Since the provided code was pre-designed to move in each direction by 8 pixels, I did not have to worry about changing any values concerning the movement of the block.
 
-Fortunately, I was able to utilize most of Assignment 6. In Assignment 6, I had created a program that takes in a ping pong ball and moves it within the boundaries of the LCD screen.
+Fortunately, I was able to utilize most of Assignment 6. In Assignment 6, I had created a program that takes in a ping pong ball and moves it within the boundaries of the LCD screen. Please reference the header file and the implementation file. 
+
+Using the two files mentioned above, I created an instance of the *ball* inside of *09_lab4_AB.c*:
+```
+ball_t pong = createBall(START_X_POS, START_Y_POS, START_X_VEL, START_Y_VEL, 4, 1);
+```
+
+Also, instead of drawing the block with the parameters passed from the main.c file, I altered the *drawBox* subroutine to take in the ball instance's dynamic x and y positions.
 
 
 ## Documentation
